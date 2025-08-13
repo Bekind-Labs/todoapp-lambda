@@ -20,12 +20,12 @@ Limitations:
 
 ### Why not using <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html">AWS SAM</a>, <a href="https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master">Serverless.tf</a>, etc?
 
-Because they're rather complex solutions for a relatively simple problem.
 AWS SAM is a big framework that covers a variety of use cases / languages, and it requires to use CloudFormation. 
 Their support for local testing is <a href="https://docs.aws.amazon.com/lambda/latest/dg/testing-guide.html#best-practices-for-testing">poor</a>.
 Serverless.tf does everything with Terraform, which seems acrobatic.
-Meanwhile, all you need is to compile a TypeScript code and create a zip file, which can be done with a <a href="https://docs.aws.amazon.com/lambda/latest/dg/typescript-package.html#aws-cli-ts">small handmade script</a>.
-We prefer a simple solution for the sake of transparency and maintainability. 
+Meanwhile, all you need is to compile a TypeScript code and create a zip file.
+This is a relatively simple task that can be done with <a href="https://docs.aws.amazon.com/lambda/latest/dg/typescript-package.html#aws-cli-ts">a few commands</a>.
+You don't need a big dependency for this.
 
 ## Architecture
 
@@ -51,26 +51,26 @@ DynamoDB, S3, ...)"]
 
 ```
 todoapp-lambda/
-├── README.md                 # This file.
-├── Makefile                  # Helper scripts.
-├── docker-compose.yml        # For LocalStack.
-├── terraform                 # IaC.
-│   ├── Makefile
-│   ├── apigateway.tf
-│   ├── ...
-│   └── provider.tf
-├── app                       # Sample TODO app.
-│   ├── Makefile
-│   ├── biome.json
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── src                   # Source code (TypeScript).
-│   │   ├── index.test.ts
-│   │   └── index.ts
-│   └── tsconfig.json
-└── tools                     # Helper scripts.
-    ├── invoke_api.sh
-    └── invoke_funcurl.sh
+  ├── README.md                 # This file.
+  ├── Makefile                  # Helper scripts.
+  ├── docker-compose.yml        # For LocalStack.
+  ├── terraform/                # IaC.
+  │   ├── Makefile
+  │   ├── apigateway.tf
+  │   ├── ...
+  │   └── provider.tf
+  ├── app/                      # Sample TODO app.
+  │   ├── Makefile
+  │   ├── biome.json
+  │   ├── package-lock.json
+  │   ├── package.json
+  │   ├── src/                  # Source code (TypeScript).
+  │   │   ├── index.test.ts
+  │   │   └── index.ts
+  │   └── tsconfig.json
+  └── tools/                    # Helper scripts.
+      ├── invoke_api.sh
+      └── invoke_funcurl.sh
 ```
 
 ## Prerequisites
@@ -117,5 +117,5 @@ $ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
 
 ## Bugs / TODOs
 
-- TODO: CI/CD support.
+- CI/CD support is lacking.
 - Terraform code needs a bit of more reworking.
