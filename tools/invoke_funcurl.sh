@@ -1,4 +1,7 @@
 #!/bin/bash
+##
+##  usage: invoke_function.sh function_name [endpoint_path] [curl args...]
+##
 JQ=${JQ:-jq}
 CURL=${curl:-curl}
 AWSCLI=${AWSCLI:-awslocal}

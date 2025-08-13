@@ -7,6 +7,7 @@ NPM=npm
 CURL=curl
 AWSCLI=awslocal
 AWS_REGION=ap-northeast-1
+INVOKE_API=../tools/invoke_api.sh
 
 API_NAME=todo_api
 FUNCTION_NAME=todo_lambda
@@ -37,7 +38,7 @@ clean:
 	-$(RM) -r dist
 
 invoke:
-	AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" ./invoke_api.sh $(API_NAME) $(ENDPOINT_PATH)
+	AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(INVOKE_API) $(API_NAME) $(ENDPOINT_PATH)
 
 tail:
 	$(AWSCLI) --no-cli-pager logs tail --region $(AWS_REGION) --since $(SINCE) /aws/lambda/$(FUNCTION_NAME)
