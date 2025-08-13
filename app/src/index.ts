@@ -37,7 +37,7 @@ export const handler = async (
   callback: Callback,
   defaultConfig?: Config,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
-  const config = defaultConfig ?? getDefaultConfig();
+  const config = defaultConfig ?? getDefaultConfig(); // Not tested
   console.debug({ config, event, context });
 
   const tableName = config.dynamoDBTableName;
