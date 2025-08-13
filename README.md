@@ -6,9 +6,9 @@ This is a sample backend with Lambda + TypeScript + LocalStack + DynamoDB.
 
 This setup allows:
 
-- The familiar TDD workflow (w/ vitest).
-- Integration tests using real(-ish) DynamoDB and S3.
+- Familiar TDD workflow (w/ vitest).
 - Minimal overhead. (There are only thin wrappers.)
+- Integration tests using real(-ish) DynamoDB and S3.
 - E2E tests via API Gateway. (E2E tests are not included in this repo.)
 
 Limitations:
@@ -38,20 +38,29 @@ DynamoDB, S3, ...)"]
 
 ## Contents
 
-- `README.md`: This file.
-- `docker-compose.yml`: Docker compose file for LocalStack.
-- `Makefile`: Helper scripts.
-- `terraform/`: Infrastructure code.
-  - Can be applied to LocalStack and a real AWS account.
-- `todo/`: A sample TODO app.
-  - `src/`: Source code (TypeScript).
-  - `biome.json`: Biome settings..
-  - `package.json`: Package dependency and helper scripts.
-  - `package-lock.json`: Package lockfile.
-  - `tsconfig.json`: TypeScript settings.
-- `tools/`: Helper scripts.
-  - `invoke_api.sh`: Script for API gateway.
-  - `invoke_funcurl.sh`: Script for Lambda Functional URL.
+```
+todoapp-lambda/
+├── README.md                 # This file.
+├── Makefile                  # Helper scripts.
+├── docker-compose.yml        # For LocalStack.
+├── terraform                 # IaC.
+│   ├── Makefile
+│   ├── apigateway.tf
+│   ├── ...
+│   └── provider.tf
+├── todo                      # Sample TODO app.
+│   ├── Makefile
+│   ├── biome.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src                   # Source code (TypeScript).
+│   │   ├── index.test.ts
+│   │   └── index.ts
+│   └── tsconfig.json
+└── tools                     # Helper scripts.
+    ├── invoke_api.sh
+    └── invoke_funcurl.sh
+```
 
 ## Prerequisites
 
@@ -76,6 +85,11 @@ $ make deploy  # deploy to LocalStack
 ```shell
 $ cd terraform/
 $ terraform init && terraform plan && terraform apply
+...
 $ cd ../
 $ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
 ```
+
+## Bugs / TODOs
+
+- Terraform code needs a bit of more reworking.
