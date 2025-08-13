@@ -91,7 +91,7 @@ $ make clean   # cleanup files
 $ make deploy  # deploy to LocalStack
 ```
 
-How to show execution logs:
+How to show the execution logs:
 
 ```shell
 $ cd app/
@@ -108,7 +108,7 @@ $ cd ../
 $ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
 ```
 
-How to show execution logs:
+How to show the execution logs:
 
 ```shell
 $ cd app/
