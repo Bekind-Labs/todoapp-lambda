@@ -10,11 +10,22 @@ This setup allows:
 - Minimal overhead. (There are only thin wrappers.)
 - Integration tests using real(-ish) DynamoDB and S3.
 - E2E tests via API Gateway. (E2E tests are not included in this repo.)
+- Uniform IaC. (You can apply the same Terraform to LocalStack and AWS.)
 
 Limitations:
 
 - Only supports JavaScript (TypeScript).
+- No support of Lambda Layers.
 - Limited support of AWS services (DynamoDB, S3, SQS, etc).
+
+### Why not using <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html">AWS SAM</a>, <a href="https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master">Serverless.tf</a>, etc?
+
+Because they're rather complex solutions for a relatively simple problem.
+AWS SAM is a big framework that covers a variety of use cases / languages, and it requires to use CloudFormation. 
+Their support for local testing is <a href="https://docs.aws.amazon.com/lambda/latest/dg/testing-guide.html#best-practices-for-testing">poor</a>.
+Serverless.tf does everything with Terraform, which seems acrobatic.
+Meanwhile, all you need is to compile a TypeScript code and create a zip file, which can be done with a <a href="https://docs.aws.amazon.com/lambda/latest/dg/typescript-package.html#aws-cli-ts">small handmade script</a>.
+We prefer a simple solution for the sake of transparency and maintainability. 
 
 ## Architecture
 
@@ -48,7 +59,7 @@ todoapp-lambda/
 │   ├── apigateway.tf
 │   ├── ...
 │   └── provider.tf
-├── todo                      # Sample TODO app.
+├── app                       # Sample TODO app.
 │   ├── Makefile
 │   ├── biome.json
 │   ├── package-lock.json
@@ -80,6 +91,13 @@ $ make clean   # cleanup files
 $ make deploy  # deploy to LocalStack
 ```
 
+How to show execution logs:
+
+```shell
+$ cd app/
+$ make tail SINCE=2h  # show logs of last 2 hours.
+```
+
 ## How to Deploy to AWS
 
 ```shell
@@ -90,6 +108,14 @@ $ cd ../
 $ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
 ```
 
+How to show execution logs:
+
+```shell
+$ cd app/
+$ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
+```
+
 ## Bugs / TODOs
 
+- TODO: CI/CD support.
 - Terraform code needs a bit of more reworking.
