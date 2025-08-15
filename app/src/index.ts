@@ -1,9 +1,4 @@
-import {
-  APIGatewayEvent,
-  Callback,
-  Context,
-  LambdaFunctionURLEvent,
-} from "aws-lambda";
+import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import { APIGatewayProxyStructuredResultV2 } from "aws-lambda/trigger/api-gateway-proxy";
 import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
 import {
@@ -14,9 +9,18 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+export const basePath = "/todos";
+
 export type Config = {
   dynamoDBClientConfig: DynamoDBClientConfig;
   dynamoDBTableName: string;
+};
+
+export type TodoItem = {
+  id: string;
+  text: string;
 };
 
 const getDefaultConfig = (): Config => {
@@ -26,9 +30,9 @@ const getDefaultConfig = (): Config => {
   };
 };
 
-export type TodoItem = {
-  id: string;
-  text: string;
+const getLastPathComponent = (path: string): string => {
+  const components = path.split("/");
+  return components[components.length - 1];
 };
 
 export const handler = async (
@@ -47,7 +51,7 @@ export const handler = async (
   const method = event.httpMethod;
   const path = event.path;
 
-  if (method === "POST" && path === "/api/todo") {
+  if (method === "POST" && path === basePath) {
     const request = JSON.parse(event.body || "{}");
     const id = crypto.randomUUID();
     const command = new PutCommand({
@@ -62,21 +66,20 @@ export const handler = async (
       statusCode: 200,
       body: id,
     };
-  } else if (method === "DELETE" && path.startsWith("/api/todo/")) {
-    const id = path.split("/")[3];
-    const command = new DeleteCommand({
+  } else if (method === "GET" && path === basePath) {
+    const command = new ScanCommand({
       TableName: tableName,
-      Key: {
-        id: id,
-      },
     });
-    await docClient.send(command);
+    const response = await docClient.send(command);
     return {
       statusCode: 200,
-      body: id,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(response.Items),
     };
-  } else if (method === "GET" && path.startsWith("/api/todo/")) {
-    const id = path.split("/")[3];
+  } else if (method === "GET" && path.startsWith(`${basePath}/`)) {
+    const id = getLastPathComponent(path);
     const command = new GetCommand({
       TableName: tableName,
       Key: {
@@ -99,20 +102,21 @@ export const handler = async (
         body: JSON.stringify(response.Item),
       };
     }
-  } else if (method === "GET" && path === "/api/todo") {
-    const command = new ScanCommand({
+  } else if (method === "DELETE" && path.startsWith(`${basePath}/`)) {
+    const id = getLastPathComponent(path);
+    const command = new DeleteCommand({
       TableName: tableName,
+      Key: {
+        id: id,
+      },
     });
-    const response = await docClient.send(command);
+    await docClient.send(command);
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(response.Items),
+      body: id,
     };
-  } else if (method === "PUT" && path.startsWith("/api/todo/")) {
-    const id = path.split("/")[3];
+  } else if (method === "PUT" && path.startsWith(`${basePath}/`)) {
+    const id = getLastPathComponent(path);
     const request = JSON.parse(event.body || "{}");
     const command = new PutCommand({
       TableName: tableName,

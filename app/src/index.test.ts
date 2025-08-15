@@ -1,5 +1,5 @@
 import { vi, describe, it, expect } from "vitest";
-import { Config, handler, TodoItem } from "./index";
+import { basePath, Config, handler, HttpMethod, TodoItem } from "./index";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
@@ -9,10 +9,8 @@ import {
 import { Context, APIGatewayEvent } from "aws-lambda";
 import { randomUUID } from "node:crypto";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
-
 describe("handler", () => {
-  const tableName = "todo";
+  const tableName = "todo_table";
   const config: Config = {
     dynamoDBClientConfig: {
       endpoint: "http://localhost:4566",
@@ -66,13 +64,13 @@ describe("handler", () => {
   };
 
   const postTodo = async (text: string): Promise<string> => {
-    const event = makeLambdaEvent("POST", "/api/todo", { text: text });
+    const event = makeLambdaEvent("POST", basePath, { text: text });
     const response = await handler(event, {} as Context, () => {}, config);
     return response.body! as string;
   };
 
   it("エンドポイントへのPOSTがステータス200を返す。", async () => {
-    const event = makeLambdaEvent("POST", "/api/todo", {});
+    const event = makeLambdaEvent("POST", basePath, {});
     const response = await handler(event, {} as Context, () => {}, config);
 
     expect(response.statusCode).toBe(200);
@@ -104,7 +102,7 @@ describe("handler", () => {
     const text = makeRandomText();
     await postTodo(text);
 
-    const event = makeLambdaEvent("GET", "/api/todo");
+    const event = makeLambdaEvent("GET", basePath);
     const response = await handler(event, {} as Context, () => {}, config);
 
     expect(response.statusCode).toBe(200);
@@ -132,7 +130,7 @@ describe("handler", () => {
     const id1 = await postTodo(text1);
     await postTodo(text2);
 
-    const event = makeLambdaEvent("GET", `/api/todo/${id1}`);
+    const event = makeLambdaEvent("GET", `${basePath}/${id1}`);
     const response = await handler(event, {} as Context, () => {}, config);
 
     const item = JSON.parse(response.body!) as TodoItem;
@@ -143,7 +141,7 @@ describe("handler", () => {
   it("存在しないIDを取得しようとすると404エラーを返す。", async () => {
     await deleteAllItems(tableName);
 
-    const event = makeLambdaEvent("GET", "/api/todo/1234");
+    const event = makeLambdaEvent("GET", `${basePath}/1234`);
     const response = await handler(event, {} as Context, () => {}, config);
 
     expect(response.statusCode).toBe(404);
@@ -156,7 +154,7 @@ describe("handler", () => {
     const id1 = await postTodo(text1);
     const id2 = await postTodo(text2);
 
-    const event = makeLambdaEvent("DELETE", `/api/todo/${id2}`);
+    const event = makeLambdaEvent("DELETE", `${basePath}/${id2}`);
     await handler(event, {} as Context, () => {}, config);
 
     const items: TodoItem[] = await scanAllItems(tableName);
@@ -171,7 +169,7 @@ describe("handler", () => {
     const text2 = makeRandomText();
     const id1 = await postTodo(text1);
 
-    const event = makeLambdaEvent("PUT", `/api/todo/${id1}`, { text: text2 });
+    const event = makeLambdaEvent("PUT", `${basePath}/${id1}`, { text: text2 });
     await handler(event, {} as Context, () => {}, config);
 
     const items: TodoItem[] = await scanAllItems(tableName);
