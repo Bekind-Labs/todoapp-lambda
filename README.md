@@ -56,9 +56,10 @@ todoapp-lambda/
   ├── docker-compose.yml        # For LocalStack.
   ├── terraform/                # IaC.
   │   ├── Makefile
-  │   ├── apigateway.tf
-  │   ├── ...
-  │   └── provider.tf
+  │   ├── main.tf
+  │   ├── provider.tf
+  │   └── modules/              # Terraform modules.
+  │       └── ...
   ├── app/                      # Sample TODO app.
   │   ├── Makefile
   │   ├── biome.json
@@ -69,8 +70,8 @@ todoapp-lambda/
   │   │   └── index.ts
   │   └── tsconfig.json
   └── tools/                    # Helper scripts.
-      ├── invoke_api.sh
-      └── invoke_funcurl.sh
+      ├── get_function_url.sh
+      └── get_rest_api_url.sh
 ```
 
 ## Prerequisites
@@ -118,4 +119,3 @@ $ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
 ## Bugs / TODOs
 
 - CI/CD support is lacking.
-- Terraform code needs a bit of more reworking.

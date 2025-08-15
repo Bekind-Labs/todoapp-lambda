@@ -7,11 +7,12 @@ NPM=npm
 CURL=curl
 AWSCLI=awslocal
 AWS_REGION=ap-northeast-1
-INVOKE_API=../tools/invoke_api.sh
+GET_REST_API_URL=../tools/get_rest_api_url.sh
 
 API_NAME=todo_api
+STAGE_NAME=dev
 FUNCTION_NAME=todo_lambda
-ENDPOINT_PATH=/dev/api/todo
+ENDPOINT_PATH=/todos
 SINCE=1h
 
 .PHONY: all deploy build test lint clean invoke tail
@@ -38,7 +39,7 @@ clean:
 	-$(RM) -r dist
 
 invoke:
-	AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(INVOKE_API) $(API_NAME) $(ENDPOINT_PATH)
+	$(CURL) -i $$(AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(GET_REST_API_URL) $(API_NAME) $(STAGE_NAME))$(ENDPOINT_PATH)
 
 tail:
 	$(AWSCLI) --no-cli-pager logs tail --region $(AWS_REGION) --since $(SINCE) /aws/lambda/$(FUNCTION_NAME)
