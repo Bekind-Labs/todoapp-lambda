@@ -1,5 +1,5 @@
 variable "table_name" {
-  type = string
+  type    = string
   default = "todo_table"
 }
 
@@ -12,8 +12,9 @@ variable "tags" {
 }
 
 module "todo_lambda" {
-  source        = "./modules/aws-lambda"
-  function_name = "todo_lambda"
+  source             = "./modules/aws-lambda"
+  function_name      = "todo_lambda"
+  execution_role_arn = aws_iam_role.lambda_execution_role.arn
   environment = {
     DYNAMODB_TABLE_NAME = var.table_name
   }
