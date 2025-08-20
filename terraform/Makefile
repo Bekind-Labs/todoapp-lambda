@@ -10,5 +10,8 @@ all:
 lint:
 	-$(TERRAFORM) fmt -recursive
 
+validate:
+	-$(TERRAFORM) validate
+
 clean:
 	-$(RM) -r .terraform* terraform.tfstate*
