@@ -1,6 +1,6 @@
 # DynamoDB Table
 
-resource "aws_dynamodb_table" "todo_table" {
+resource "aws_dynamodb_table" "dynamodb_table" {
   name      = var.table_name
   hash_key  = var.hash_key
   range_key = var.range_key

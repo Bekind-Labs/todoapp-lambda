@@ -6,7 +6,7 @@ data "archive_file" "empty" {
   output_path = "/tmp/empty.zip"
 }
 
-resource "aws_lambda_function" "function" {
+resource "aws_lambda_function" "lambda_function" {
   function_name    = var.function_name
   filename         = data.archive_file.empty.output_path
   role             = var.execution_role_arn
