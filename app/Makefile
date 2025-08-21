@@ -39,7 +39,7 @@ clean:
 	-$(RM) -r dist
 
 invoke:
-	$(CURL) -i $$(AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(GET_REST_API_URL) $(API_NAME) $(STAGE_NAME))$(ENDPOINT_PATH)
+	$(CURL) -i $$(AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(GET_REST_API_URL) $(API_NAME) $(STAGE_NAME) $(ENDPOINT_PATH))
 
 tail:
 	$(AWSCLI) --no-cli-pager logs tail --region $(AWS_REGION) --since $(SINCE) /aws/lambda/$(FUNCTION_NAME)
