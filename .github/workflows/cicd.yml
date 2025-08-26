@@ -34,6 +34,7 @@ jobs:
           AWS_ENDPOINT_URL: http://localstack:4566/
           AWS_ACCESS_KEY_ID: xxx
           AWS_SECRET_ACCESS_KEY: yyy
+          TF_LOG: debug
       - name: Run Tests
         run: |
           set -x
