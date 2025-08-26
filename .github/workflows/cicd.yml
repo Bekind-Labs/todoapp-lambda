@@ -24,7 +24,7 @@ jobs:
         run: |
           set -x
           docker run --rm -i \
-            -e AWS_ENDPOINT_URL=http://localhost:4566/ \
+            -e AWS_ENDPOINT_URL=http://host.docker.internal:4566/ \
             -e AWS_ACCESS_KEY_ID=xxx \
             -e AWS_SECRET_ACCESS_KEY=yyy \
             -v ./terraform:/tmp/terraform \
