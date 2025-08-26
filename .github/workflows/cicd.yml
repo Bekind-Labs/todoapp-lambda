@@ -14,11 +14,11 @@ jobs:
         image: localstack/localstack
         ports:
           - "4566:4566"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
         env:
           DISABLE_CORS_CHECKS: 1
           DYNAMODB_SHARE_DB: 1
-        volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
     steps:
       - name: Checkout
         uses: actions/checkout@v4

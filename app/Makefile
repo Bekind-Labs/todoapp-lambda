@@ -26,13 +26,16 @@ dist/index.zip: build
 	-$(MKDIR) dist
 	cd dist && $(ZIP) -r index.zip index.js*
 
-build:
+ci:
+	$(NPM) ci
+
+build: ci
 	$(NPM) run build
 
-test:
+test: ci
 	$(NPM) run test
 
-lint:
+lint: ci
 	$(NPM) run lint
 
 clean:
