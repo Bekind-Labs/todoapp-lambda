@@ -21,15 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
-      - name: Initialize Localstack
+        uses: opentofu/setup-opentofu@v1
+      - name: Initialize LocalStack
         working-directory: ./terraform
         run: |
           set -x
-          terraform init
-          terraform apply -auto-approve
+          tofu init
+          tofu apply -auto-approve
         env:
           AWS_ENDPOINT_URL: http://localstack:4566/
           AWS_ACCESS_KEY_ID: xxx
