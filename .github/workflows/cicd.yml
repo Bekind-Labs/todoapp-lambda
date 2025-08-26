@@ -17,6 +17,8 @@ jobs:
         env:
           DISABLE_CORS_CHECKS: 1
           DYNAMODB_SHARE_DB: 1
+        volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,15 +29,11 @@ jobs:
         run: terraform init
       - name: Initialize LocalStack
         working-directory: ./terraform
-        run: |
-          set -x
-          curl -v http://localhost:4566/
-          terraform apply -auto-approve
+        run: terraform apply -auto-approve
         env:
           AWS_ENDPOINT_URL: http://localhost:4566/
           AWS_ACCESS_KEY_ID: xxx
           AWS_SECRET_ACCESS_KEY: yyy
-          TF_LOG: debug
       - name: Run Tests
         run: |
           set -x
