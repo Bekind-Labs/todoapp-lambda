@@ -29,10 +29,10 @@ jobs:
         working-directory: ./terraform
         run: |
           set -x
-          curl -v http://localstack:4566/
+          curl -v http://localhost:4566/
           terraform apply -auto-approve
         env:
-          AWS_ENDPOINT_URL: http://localstack:4566/
+          AWS_ENDPOINT_URL: http://localhost:4566/
           AWS_ACCESS_KEY_ID: xxx
           AWS_SECRET_ACCESS_KEY: yyy
           TF_LOG: debug
