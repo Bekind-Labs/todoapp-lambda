@@ -27,6 +27,6 @@ jobs:
             -e AWS_ENDPOINT_URL=http://localstack:4566/ \
             -e AWS_ACCESS_KEY_ID=xxx \
             -e AWS_SECRET_ACCESS_KEY=yyy \
-            --entrypoint /bin/sh \
-            hashicorp/terraform \
+            -v ./terraform:/tmp/terraform \
+            --entrypoint /bin/sh hashicorp/terraform \
             -c 'cd /tmp/terraform && terraform init && terraform apply -auto-approve'
