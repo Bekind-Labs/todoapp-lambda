@@ -36,3 +36,15 @@ module "todo_api" {
   lambda_invoke_arn = module.todo_lambda.invoke_arn
   tags              = var.tags
 }
+
+output "lambda_invoke_arn" {
+  value = module.todo_lambda.invoke_arn
+}
+
+output "rest_api_id" {
+  value = module.todo_api.api_id
+}
+
+output "rest_api_invoke_url" {
+  value = module.todo_api.invoke_url
+}
