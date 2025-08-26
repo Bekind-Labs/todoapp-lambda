@@ -27,9 +27,14 @@ jobs:
         run: terraform init
       - name: Initialize LocalStack
         working-directory: ./terraform
-        run: terraform apply -auto-approve
+        run: |
+          set -x
+          curl -v http://localstack:4566/
+          terraform apply -auto-approve
         env:
           AWS_ENDPOINT_URL: http://localstack:4566/
+          AWS_ACCESS_KEY_ID: xxx
+          AWS_SECRET_ACCESS_KEY: yyy
           TF_LOG: debug
       - name: Run Tests
         run: |
