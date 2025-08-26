@@ -2,7 +2,10 @@
 
 data "archive_file" "empty" {
   type        = "zip"
-  source_file = "/dev/null"
+  source {
+    content = "{}"
+    filename = "index.js"
+  }
   output_path = "/tmp/empty.zip"
 }
 
