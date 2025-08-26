@@ -20,16 +20,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Localstack
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Initialize Localstack
         run: |
           set -x
-          docker run --rm -i \
-            -e AWS_ENDPOINT_URL=http://localstack:4566/ \
-            -e AWS_ACCESS_KEY_ID=xxx \
-            -e AWS_SECRET_ACCESS_KEY=yyy \
-            -v ./terraform:/tmp/terraform \
-            --entrypoint /bin/sh hashicorp/terraform \
-            -c 'cd /tmp/terraform && terraform init && terraform apply -auto-approve'
+          cd ./terraform
+          terraform init
+          terraform apply -auto-approve
+        env:
+          AWS_ENDPOINT_URL: http://localstack:4566/
+          AWS_ACCESS_KEY_ID: xxx
+          AWS_SECRET_ACCESS_KEY: yyy
       - name: Run Tests
         run: |
           set -x
