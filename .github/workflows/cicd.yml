@@ -24,9 +24,13 @@ jobs:
         run: |
           set -x
           docker run --rm -i \
-            -e AWS_ENDPOINT_URL=http://localstack:4566/ \
+            -e AWS_ENDPOINT_URL=http://localhost:4566/ \
             -e AWS_ACCESS_KEY_ID=xxx \
             -e AWS_SECRET_ACCESS_KEY=yyy \
             -v ./terraform:/tmp/terraform \
             --entrypoint /bin/sh hashicorp/terraform \
             -c 'cd /tmp/terraform && terraform init && terraform apply -auto-approve'
+      - name: Run Tests
+        run: |
+          set -x
+          make test
