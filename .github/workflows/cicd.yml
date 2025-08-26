@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      localstack:
+        image: localstack/localstack
+        ports:
+          - "4566:4566"
+        env:
+          DISABLE_CORS_CHECKS: 1
+          DYNAMODB_SHARE_DB: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Localstack
+        run: |
+          set -x
+          docker run --rm -i \
+            -e AWS_ENDPOINT_URL=http://localstack:4566/ \
+            -e AWS_ACCESS_KEY_ID=xxx \
+            -e AWS_SECRET_ACCESS_KEY=yyy \
+            --entrypoint /bin/sh \
+            hashicorp/terraform \
+            -c 'cd /tmp/terraform && terraform init && terraform apply -auto-approve'
