@@ -1,9 +1,9 @@
 # Lambda
 
 data "archive_file" "empty" {
-  type        = "zip"
+  type = "zip"
   source {
-    content = "{}"
+    content  = "{}"
     filename = "index.js"
   }
   output_path = "/tmp/empty.zip"
