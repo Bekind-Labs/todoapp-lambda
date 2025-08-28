@@ -31,7 +31,6 @@ module "todo_table" {
 module "todo_api" {
   source            = "./modules/aws-apigateway"
   api_name          = "todo_api"
-  api_path          = "todos"
   api_stage         = "dev"
   lambda_invoke_arn = module.todo_lambda.invoke_arn
   tags              = var.tags

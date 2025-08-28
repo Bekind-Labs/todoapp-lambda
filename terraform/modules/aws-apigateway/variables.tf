@@ -3,11 +3,6 @@ variable "api_name" {
   type        = string
 }
 
-variable "api_path" {
-  description = "API path."
-  type        = string
-}
-
 variable "api_stage" {
   description = "API stage."
   type        = string
