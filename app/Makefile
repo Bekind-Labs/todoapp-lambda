@@ -35,6 +35,9 @@ build: ci
 test: ci
 	$(NPM) run test
 
+e2etest: ci deploy
+	$(NPM) run e2etest
+
 lint: ci
 	$(NPM) run lint
 
