@@ -79,7 +79,6 @@ todoapp-lambda/
 - Node.js
 - Docker
 - Terraform
-- `awslocal` package (`brew install awscli-local`)
 
 ## How to Develop / Test
 
