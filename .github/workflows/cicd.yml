@@ -43,3 +43,8 @@ jobs:
         run: |
           set -x
           make test
+
+      - name: Run E2E tests
+        run: |
+          set -x
+          cd app && make e2etest
