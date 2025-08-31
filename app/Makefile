@@ -23,8 +23,8 @@ deploy: clean dist/index.zip
 	PATH=../tools/:$$PATH $(AWSCLI) --no-cli-pager lambda update-function-code --region $(AWS_REGION) --function-name $(FUNCTION_NAME) --zip-file fileb://dist/index.zip
 
 dist/index.zip: build
-	-$(MKDIR) dist
-	cd dist && $(ZIP) -r index.zip index.js*
+	-$(MKDIR) ./dist
+	cd ./dist && $(ZIP) -r index.zip index.js*
 
 ci:
 	$(NPM) ci
@@ -42,7 +42,7 @@ lint: ci
 	$(NPM) run lint
 
 clean:
-	-$(RM) -r dist
+	-$(RM) -r ./dist
 
 invoke:
 	PATH=../tools/:$$PATH $(CURL) -i $$(AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(GET_REST_API_URL) $(API_NAME) $(STAGE_NAME) $(ENDPOINT_PATH))

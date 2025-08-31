@@ -3,7 +3,7 @@
 AWSCLI=awslocal
 AWS_REGION=ap-northeast-1
 
-DIRS=app
+DIRS=./app
 
 .PHONY: all deploy test lint clean
 
