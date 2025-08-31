@@ -1,6 +1,7 @@
-import { APIGatewayEvent, Callback, Context } from "aws-lambda";
-import { APIGatewayProxyStructuredResultV2 } from "aws-lambda/trigger/api-gateway-proxy";
-import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBClient,
+  type DynamoDBClientConfig,
+} from "@aws-sdk/client-dynamodb";
 import {
   DeleteCommand,
   DynamoDBDocumentClient,
@@ -8,6 +9,8 @@ import {
   PutCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
+import type { APIGatewayEvent, Callback, Context } from "aws-lambda";
+import type { APIGatewayProxyStructuredResultV2 } from "aws-lambda/trigger/api-gateway-proxy";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -38,7 +41,7 @@ const getLastPathComponent = (path: string): string => {
 export const handler = async (
   event: APIGatewayEvent,
   context: Context,
-  callback: Callback,
+  _callback: Callback,
   defaultConfig?: Config,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
   const config = defaultConfig ?? getDefaultConfig(); // Not tested

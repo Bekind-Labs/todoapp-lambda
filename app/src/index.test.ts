@@ -1,13 +1,19 @@
-import { vi, describe, it, expect } from "vitest";
-import { basePath, Config, handler, HttpMethod, TodoItem } from "./index";
+import { randomUUID } from "node:crypto";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBDocumentClient,
   DeleteCommand,
+  DynamoDBDocumentClient,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { Context, APIGatewayEvent } from "aws-lambda";
-import { randomUUID } from "node:crypto";
+import type { APIGatewayEvent, Context } from "aws-lambda";
+import { describe, expect, it } from "vitest";
+import {
+  basePath,
+  type Config,
+  type HttpMethod,
+  handler,
+  type TodoItem,
+} from "./index";
 
 describe("handler", () => {
   const tableName = "todo_table";
@@ -106,7 +112,7 @@ describe("handler", () => {
     const response = await handler(event, {} as Context, () => {}, config);
 
     expect(response.statusCode).toBe(200);
-    expect(response.headers!["Content-Type"]).toBe("application/json");
+    expect(response.headers?.["Content-Type"]).toBe("application/json");
     const items = JSON.parse(response.body!) as TodoItem[];
     expect(items.length).toBe(1);
     expect(items[0].text).toBe(text);

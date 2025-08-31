@@ -5,7 +5,8 @@
   "scripts": {
     "test": "vitest --run ./src",
     "e2etest": "vitest --run ./e2e",
-    "lint": "biome format --write ./src/ ./e2e/",
+    "lint:check": "biome check ./src/ ./e2e/",
+    "lint": "biome check --write ./src/ ./e2e/",
     "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js"
   },
   "devDependencies": {

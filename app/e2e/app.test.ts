@@ -1,10 +1,10 @@
-import { vi, describe, it, expect } from "vitest";
 import { randomUUID } from "node:crypto";
-import { TodoItem } from "../src";
 import {
   APIGatewayClient,
   GetRestApisCommand,
 } from "@aws-sdk/client-api-gateway";
+import { describe, expect, it, vi } from "vitest";
+import type { TodoItem } from "../src";
 
 const AWS_REGION = process.env.AWS_REGION ?? "ap-northeast-1";
 const REST_API_NAME = "todo_api";
