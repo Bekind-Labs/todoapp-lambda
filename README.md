@@ -7,9 +7,9 @@ This is a sample backend with Lambda + TypeScript + LocalStack + DynamoDB.
 This setup allows:
 
 - Familiar TDD workflow (w/ vitest).
-- Minimal overhead. (There are only thin wrappers.)
+- Minimal overhead.
 - Integration tests using real(-ish) DynamoDB and S3.
-- E2E tests via API Gateway. (E2E tests are not included in this repo.)
+- E2E tests via API Gateway.
 - Uniform IaC. (You can apply the same Terraform to LocalStack and AWS.)
 
 Limitations:
@@ -54,10 +54,12 @@ todoapp-lambda/
   ├── README.md                 # This file.
   ├── Makefile                  # Helper scripts.
   ├── docker-compose.yml        # For LocalStack.
+  ├── .nvmrc                    # Node.js version.
   ├── terraform/                # IaC.
   │   ├── Makefile
   │   ├── main.tf
   │   ├── provider.tf
+  │   ├── iam.tf
   │   └── modules/              # Terraform modules.
   │       └── ...
   ├── app/                      # Sample TODO app.
@@ -68,8 +70,11 @@ todoapp-lambda/
   │   ├── src/                  # Source code (TypeScript).
   │   │   ├── index.test.ts
   │   │   └── index.ts
+  │   ├── e2e/                  # E2E tests.
+  │   │   └── app.test.ts
   │   └── tsconfig.json
   └── tools/                    # Helper scripts.
+      ├── awslocal
       ├── get_function_url.sh
       └── get_rest_api_url.sh
 ```
