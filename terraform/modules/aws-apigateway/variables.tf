@@ -13,6 +13,12 @@ variable "lambda_invoke_arn" {
   type        = string
 }
 
+variable "allowed_ip_addrs" {
+  description = "List of Allowed IP addresses."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 variable "tags" {
   description = "API tags."
   type        = map(string)

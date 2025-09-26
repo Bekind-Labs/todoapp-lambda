@@ -43,6 +43,7 @@ resource "aws_api_gateway_deployment" "rest_api_deployment" {
       aws_api_gateway_resource.rest_api_resource.id,
       aws_api_gateway_method.rest_api_method.id,
       aws_api_gateway_integration.rest_api_integration.id,
+      aws_api_gateway_rest_api_policy.rest_api_ip_restriction.id,
     ]))
   }
 
@@ -56,4 +57,29 @@ resource "aws_api_gateway_stage" "rest_api_stage" {
   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
   stage_name    = var.api_stage
   tags          = var.tags
+}
+
+data "aws_iam_policy_document" "restrict_ip_policy" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions   = ["execute-api:Invoke"]
+    resources = ["${aws_api_gateway_rest_api.rest_api.execution_arn}/*"]
+
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.allowed_ip_addrs
+    }
+  }
+}
+
+resource "aws_api_gateway_rest_api_policy" "rest_api_ip_restriction" {
+  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+  policy      = data.aws_iam_policy_document.restrict_ip_policy.json
 }

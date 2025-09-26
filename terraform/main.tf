@@ -3,6 +3,21 @@ variable "table_name" {
   default = "todo_table"
 }
 
+variable "function_name" {
+  type = string
+  default = "todo_lambda"
+}
+
+variable "api_name" {
+  type = string
+  default = "todo_api"
+}
+
+variable "allowed_ip_addrs" {
+  type = list(string)
+  default = ["1.2.3.4/32"]
+}
+
 variable "tags" {
   type = map(string)
   default = {
@@ -13,7 +28,7 @@ variable "tags" {
 
 module "todo_lambda" {
   source             = "./modules/aws-lambda"
-  function_name      = "todo_lambda"
+  function_name      = var.function_name
   execution_role_arn = aws_iam_role.lambda_execution_role.arn
   environment = {
     DYNAMODB_TABLE_NAME = var.table_name
@@ -30,8 +45,9 @@ module "todo_table" {
 
 module "todo_api" {
   source            = "./modules/aws-apigateway"
-  api_name          = "todo_api"
+  api_name          = var.api_name
   api_stage         = "dev"
+  allowed_ip_addrs = var.allowed_ip_addrs
   lambda_invoke_arn = module.todo_lambda.invoke_arn
   tags              = var.tags
 }
