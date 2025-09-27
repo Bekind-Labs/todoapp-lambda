@@ -109,7 +109,7 @@ $ make tail SINCE=2h  # show logs of last 2 hours.
 $ cd terraform/
 $ terraform init && terraform plan && terraform apply
 ...
-$ cd ../
+$ cd app/
 $ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
 ```
 
