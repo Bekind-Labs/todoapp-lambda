@@ -20,7 +20,7 @@ SINCE=1h
 all:
 
 deploy: clean dist/index.zip
-	PATH=../tools/:$$PATH $(AWSCLI) --no-cli-pager lambda update-function-code --region $(AWS_REGION) --function-name $(FUNCTION_NAME) --zip-file fileb://dist/index.zip
+	PATH=../tools/:$$PATH $(AWSCLI) lambda update-function-code --region $(AWS_REGION) --function-name $(FUNCTION_NAME) --zip-file fileb://dist/index.zip
 
 dist/index.zip: build
 	-$(MKDIR) ./dist
@@ -48,4 +48,4 @@ invoke:
 	PATH=../tools/:$$PATH $(CURL) -i $$(AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(GET_REST_API_URL) $(API_NAME) $(STAGE_NAME) $(ENDPOINT_PATH))
 
 tail:
-	PATH=../tools/:$$PATH $(AWSCLI) --no-cli-pager logs tail --region $(AWS_REGION) --since $(SINCE) /aws/lambda/$(FUNCTION_NAME)
+	PATH=../tools/:$$PATH $(AWSCLI) logs tail --region $(AWS_REGION) --since $(SINCE) /aws/lambda/$(FUNCTION_NAME)
