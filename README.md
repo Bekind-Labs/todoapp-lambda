@@ -75,6 +75,7 @@ todoapp-lambda/
   │   └── tsconfig.json
   └── tools/                    # Helper scripts.
       ├── awslocal
+      ├── tflocal
       ├── get_function_url.sh
       └── get_rest_api_url.sh
 ```
@@ -84,6 +85,7 @@ todoapp-lambda/
 - Node.js
 - Docker
 - Terraform
+- LocalStack
 
 ## How to Develop / Test
 
@@ -122,4 +124,4 @@ $ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
 
 ## Bugs / TODOs
 
-- CI/CD support is lacking.
+- CI/CD support is incomplete.
