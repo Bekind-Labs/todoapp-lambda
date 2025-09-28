@@ -1,5 +1,7 @@
 # todoapp-lambda
 
+*[Japanese version](README-ja.md)*
+
 This is a sample backend with Lambda + TypeScript + LocalStack + DynamoDB.
 
 ## Pros and Cons
@@ -98,7 +100,7 @@ $ make clean   # cleanup files
 $ make deploy  # deploy to LocalStack
 ```
 
-How to show the execution logs:
+The execution logs are stored on LocalStack:
 
 ```shell
 $ cd app/
@@ -107,15 +109,22 @@ $ make tail SINCE=2h  # show logs of last 2 hours.
 
 ## How to Deploy to AWS
 
+First, create the resources on AWS
+(code isn't deployed at this point):
+
 ```shell
 $ cd terraform/
 $ terraform init && terraform plan && terraform apply
-...
+```
+
+Then deploy the code:
+
+```shell
 $ cd app/
 $ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
 ```
 
-How to show the execution logs:
+The execution logs are stored on CloudWatch.
 
 ```shell
 $ cd app/
