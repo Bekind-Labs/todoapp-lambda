@@ -15,6 +15,20 @@ import {
   type TodoItem,
 } from "./index";
 
+const makeLambdaEvent = (
+  httpMethod: HttpMethod,
+  path: string,
+  headers?: unknown,
+  body?: unknown,
+): APIGatewayEvent => {
+  return {
+    httpMethod: httpMethod,
+    path: path,
+    headers: headers ?? {},
+    body: body && JSON.stringify(body),
+  } as APIGatewayEvent;
+};
+
 describe("handler", () => {
   const tableName = "todo_table";
   const config: Config = {
@@ -52,31 +66,28 @@ describe("handler", () => {
     }
   };
 
-  const makeLambdaEvent = (
-    httpMethod: HttpMethod,
-    path: string,
-    body?: unknown,
-  ): APIGatewayEvent => {
-    return {
-      headers: {},
-      httpMethod: httpMethod,
-      path: path,
-      body: body && JSON.stringify(body),
-    } as APIGatewayEvent;
-  };
-
   const makeRandomText = () => {
     return `text-${randomUUID()}`;
   };
 
   const postTodo = async (text: string): Promise<string> => {
-    const event = makeLambdaEvent("POST", basePath, { text: text });
+    const event = makeLambdaEvent(
+      "POST",
+      basePath,
+      { "Content-Type": "application/json" },
+      { text: text },
+    );
     const response = await handler(event, {} as Context, () => {}, config);
     return response.body! as string;
   };
 
   it("エンドポイントへのPOSTがステータス200を返す。", async () => {
-    const event = makeLambdaEvent("POST", basePath, {});
+    const event = makeLambdaEvent(
+      "POST",
+      basePath,
+      { "Content-Type": "application/json" },
+      {},
+    );
     const response = await handler(event, {} as Context, () => {}, config);
 
     expect(response.statusCode).toBe(200);
@@ -175,7 +186,12 @@ describe("handler", () => {
     const text2 = makeRandomText();
     const id1 = await postTodo(text1);
 
-    const event = makeLambdaEvent("PUT", `${basePath}/${id1}`, { text: text2 });
+    const event = makeLambdaEvent(
+      "PUT",
+      `${basePath}/${id1}`,
+      { "Content-Type": "application/json" },
+      { text: text2 },
+    );
     await handler(event, {} as Context, () => {}, config);
 
     const items: TodoItem[] = await scanAllItems(tableName);

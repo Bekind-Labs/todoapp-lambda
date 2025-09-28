@@ -14,16 +14,9 @@ import type { APIGatewayProxyStructuredResultV2 } from "aws-lambda/trigger/api-g
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
-export const basePath = "/todos";
-
 export type Config = {
   dynamoDBClientConfig: DynamoDBClientConfig;
   dynamoDBTableName: string;
-};
-
-export type TodoItem = {
-  id: string;
-  text: string;
 };
 
 const getDefaultConfig = (): Config => {
@@ -31,6 +24,13 @@ const getDefaultConfig = (): Config => {
     dynamoDBClientConfig: {},
     dynamoDBTableName: process.env.DYNAMODB_TABLE_NAME!,
   };
+};
+
+export const basePath = "/todos";
+
+export type TodoItem = {
+  id: string;
+  text: string;
 };
 
 const getLastPathComponent = (path: string): string => {
