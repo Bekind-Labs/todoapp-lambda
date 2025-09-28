@@ -16,7 +16,7 @@ AWSの有名なサーバレス環境。
 
 - Pro: デプロイが簡単。
 - Pro: 動いた分しか課金されない。
-− Con: 重い処理には向かない。
+- Con: 重い処理には向かない。
 - Con: 単体でできることは少ないので、AWSの他サービスと密に連携する。
   - → 「ピタゴラスイッチ」ができやすい。 
 - Con: ベンダーロックイン。
@@ -39,7 +39,7 @@ Lambdaの開発キットとしては AWS SAM が有名だが、今回は使わ�
 
 - Docker
 - Terraform
-- LocalStack
+- [LocalStack](https://github.com/localstack/localstack)
   - ローカル環境で動くAWSエミュレータ
   - S3 + DynamoDB + EventBridge + API Gateway + ... + Lambda
 
@@ -125,8 +125,7 @@ await handler(..., config);
 ```
 make deploy
 ```
-基本的に、やっていることはこんだけ。
-https://docs.aws.amazon.com/lambda/latest/dg/typescript-package.html#aws-cli-ts
+基本的に、[やっていることはこんだけ](https://docs.aws.amazon.com/lambda/latest/dg/typescript-package.html#aws-cli-ts)。
 
 本物AWSへのデプロイも簡単:
 ```
