@@ -1,4 +1,4 @@
-# Lambdaで快適なTDDを!
+# Lambdaでも快適なTDDを!
 
 (プレゼン資料)
 
@@ -23,7 +23,8 @@ AWSの有名なサーバレス環境。
 
 ## なぜAWS SAMを使わないの?
 
-Lambdaの開発キットとしては AWS SAM が有名だが、今回は使わないことにした。
+Lambdaの開発キットとしては
+[AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) が有名だが、今回は使わないことにした。
 
 - 多様なユースケースをサポートしているため、重いし複雑。
   - いろいろ設定を書かなければならない。
