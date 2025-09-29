@@ -5,7 +5,7 @@
 JQ=${JQ:-jq}
 AWSCLI=${AWSCLI:-awslocal}
 AWS_REGION=${AWS_REGION:-ap-northeast-1}
-AWS_ENDPOINT=${AWS_ENDPOINT:localstack.localhost:4566}
+AWS_ENDPOINT=${AWS_ENDPOINT:-localstack.localhost:4566}
 
 [ $# -lt 2 ] && echo "usage: $0 api_name stage_name [endpoint_path]" && exit 1
 
