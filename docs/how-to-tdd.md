@@ -95,7 +95,7 @@ export const handler = async (
    context: Context,
    callback: Callback,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
-...
+  ...
 }
 ```
 
