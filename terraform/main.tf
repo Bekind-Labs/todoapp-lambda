@@ -4,17 +4,17 @@ variable "table_name" {
 }
 
 variable "function_name" {
-  type = string
+  type    = string
   default = "todo_lambda"
 }
 
 variable "api_name" {
-  type = string
+  type    = string
   default = "todo_api"
 }
 
 variable "allowed_ip_addrs" {
-  type = list(string)
+  type    = list(string)
   default = ["1.2.3.4/32"]
 }
 
@@ -47,7 +47,7 @@ module "todo_api" {
   source            = "./modules/aws-apigateway"
   api_name          = var.api_name
   api_stage         = "dev"
-  allowed_ip_addrs = var.allowed_ip_addrs
+  allowed_ip_addrs  = var.allowed_ip_addrs
   lambda_invoke_arn = module.todo_lambda.invoke_arn
   tags              = var.tags
 }

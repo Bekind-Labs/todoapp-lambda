@@ -16,6 +16,7 @@ resource "aws_lambda_function" "lambda_function" {
   handler          = var.function_handler
   source_code_hash = data.archive_file.empty.output_base64sha256
   runtime          = "nodejs22.x"
+  architectures    = ["arm64"]
 
   environment {
     variables = var.environment
