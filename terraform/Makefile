@@ -14,4 +14,4 @@ validate:
 	-$(TERRAFORM) validate
 
 clean:
-	-$(RM) -r .terraform* terraform.tfstate*
+	-$(RM) -r .terraform terraform.tfstate*
