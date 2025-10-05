@@ -3,21 +3,20 @@
 AWSCLI=awslocal
 AWS_REGION=ap-northeast-1
 
-DIRS=./app
-
 .PHONY: all deploy test lint clean
 
 all:
 
 deploy:
-	for dir in $(DIRS); do cd $$dir && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) deploy; done
+	cd ./app && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) deploy
 
 test:
-	for dir in $(DIRS); do cd $$dir && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) test; done
+	cd ./app && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) test
 
 lint:
-	for dir in $(DIRS); do cd $$dir && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) lint; done
+	cd ./app && $(MAKE) lint
+	cd ./terraform && $(MAKE) lint
 
 clean:
-	for dir in $(DIRS); do cd $$dir && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) clean; done
-	cd terraform && $(MAKE) clean
+	cd ./app && $(MAKE) clean
+	cd ./terraform && $(MAKE) clean
