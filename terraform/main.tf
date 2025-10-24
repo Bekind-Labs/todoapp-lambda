@@ -20,7 +20,7 @@ variable "allowed_ip_addrs" {
 
 variable "architecture" {
   type    = string
-  default = "x86_64"
+  default = "arm64"
 }
 
 variable "tags" {
