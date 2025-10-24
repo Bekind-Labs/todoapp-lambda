@@ -3,9 +3,12 @@
 AWSCLI=awslocal
 AWS_REGION=ap-northeast-1
 
-.PHONY: all deploy test lint clean
+.PHONY: all ci deploy test lint clean
 
 all:
+
+ci:
+	cd ./app && $(MAKE) ci
 
 deploy:
 	cd ./app && AWSCLI="$(AWSCLI)" AWS_REGION="$(AWS_REGION)" $(MAKE) deploy

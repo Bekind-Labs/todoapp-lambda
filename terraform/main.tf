@@ -18,6 +18,11 @@ variable "allowed_ip_addrs" {
   default = ["1.2.3.4/32"]
 }
 
+variable "architecture" {
+  type    = string
+  default = "x86_64"
+}
+
 variable "tags" {
   type = map(string)
   default = {
@@ -30,6 +35,7 @@ module "todo_lambda" {
   source             = "./modules/aws-lambda"
   function_name      = var.function_name
   execution_role_arn = aws_iam_role.lambda_execution_role.arn
+  architecture = var.architecture
   environment = {
     DYNAMODB_TABLE_NAME = var.table_name
   }

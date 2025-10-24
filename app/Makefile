@@ -15,9 +15,12 @@ FUNCTION_NAME=todo_lambda
 ENDPOINT_PATH=/todos
 SINCE=1h
 
-.PHONY: all deploy build test lint clean invoke tail
+.PHONY: all ci deploy build test lint clean invoke tail
 
 all:
+
+ci:
+	$(NPM) ci
 
 deploy: clean dist/index.zip
 	PATH=../tools/:$$PATH $(AWSCLI) lambda update-function-code --region $(AWS_REGION) --function-name $(FUNCTION_NAME) --zip-file fileb://dist/index.zip
@@ -26,19 +29,16 @@ dist/index.zip: build
 	-$(MKDIR) ./dist
 	cd ./dist && $(ZIP) -r index.zip index.js*
 
-ci:
-	$(NPM) ci
-
-build: ci
+build:
 	$(NPM) run build
 
-test: ci
+test:
 	$(NPM) run test
 
-e2etest: ci deploy
+e2etest: deploy
 	$(NPM) run e2etest
 
-lint: ci
+lint:
 	$(NPM) run lint
 
 clean:
