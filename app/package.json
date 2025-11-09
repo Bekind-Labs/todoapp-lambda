@@ -13,7 +13,7 @@
     "@biomejs/biome": "^2.2.6",
     "@types/aws-api-gateway-client": "^0.3.3",
     "@types/aws-lambda": "^8.10.157",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.10.0",
     "esbuild": "^0.26.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
