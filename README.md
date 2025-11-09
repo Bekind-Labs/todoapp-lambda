@@ -109,26 +109,34 @@ $ make tail SINCE=2h  # show logs of last 2 hours.
 
 ## How to Deploy to AWS
 
-First, create the resources on AWS
-(code isn't deployed at this point):
+First, create a Terraform state bucket with globally unique name.
+
+```shell
+$ aws s3 mb s3://my-terraform-state
+```
+
+Next, initialize the resources on AWS
+(code isn't uploaded at this point):
 
 ```shell
 $ cd terraform/
-$ terraform init && terraform plan && terraform apply
+$ make init STATE_BUCKET=my-terraform-state
+$ make plan
+$ make apply
 ```
 
 Then deploy the code:
 
 ```shell
 $ cd app/
-$ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
+$ make deploy AWSCLI=aws
 ```
 
 The execution logs are stored on CloudWatch.
 
 ```shell
 $ cd app/
-$ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
+$ make tail AWSCLI=aws
 ```
 
 ## Bugs / TODOs

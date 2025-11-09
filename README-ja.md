@@ -108,29 +108,37 @@ $ make tail SINCE=2h  # 過去2時間のログを表示。
 
 ## AWSにデプロイするには
 
-まず、AWS上にリソースを作成する
+まず、Terraform状態管理用のS3バケットを作成する。
+バケット名は一意である必要がある。
+
+```shell
+$ aws s3 mb s3://my-terraform-state
+```
+
+次に、AWS上のリソースを初期化する
 (この時点ではまだコードはデプロイされない) :
 
 ```shell
 $ cd terraform/
-$ terraform init && terraform plan && terraform apply
+$ make init STATE_BUCKET=my-terraform-state
+$ make plan
+$ make apply
 ```
 
-次にコードをデプロイする:
+そしてコードをデプロイする:
 
 ```shell
 $ cd app/
-$ make deploy AWSCLI=aws AWS_REGION=ap-northeast-1 
+$ make deploy AWSCLI=aws
 ```
 
 Lambdaの実行ログは CloudWatch上に保存されている:
 
 ```shell
 $ cd app/
-$ make tail AWSCLI=aws AWS_REGION=ap-northeast-1
+$ make tail AWSCLI=aws
 ```
 
 ## バグ・TODOなど
 
 - CI/CD サポートはまだ不完全。
-
