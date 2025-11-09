@@ -16,7 +16,7 @@
     "@types/node": "^24.9.1",
     "esbuild": "^0.26.0",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.8"
   },
   "dependencies": {
     "@aws-sdk/client-api-gateway": "^3.927.0",
