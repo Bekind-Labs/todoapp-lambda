@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-api-gateway": "^3.927.0",
-    "@aws-sdk/client-dynamodb": "^3.918.0",
+    "@aws-sdk/client-dynamodb": "^3.927.0",
     "@aws-sdk/lib-dynamodb": "^3.908.0"
   }
 }
