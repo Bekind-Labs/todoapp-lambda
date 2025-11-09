@@ -26,16 +26,26 @@ jobs:
 
       - name: Initialize Terraform
         working-directory: ./terraform
-        run: terraform init
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566/
+          AWS_REGION: ap-northeast-1
+          AWS_ACCESS_KEY_ID: xxx
+          AWS_SECRET_ACCESS_KEY: yyy
+          STATE_BUCKET: local-terraform-state
+        run: |
+          set -x
+          aws --endpoint=$AWS_ENDPOINT_URL s3 mb s3://$STATE_BUCKET
+          terraform init -backend-config=bucket=$STATE_BUCKET
 
       - name: Initialize LocalStack resources
         working-directory: ./terraform
-        run: terraform apply -auto-approve
         env:
           AWS_ENDPOINT_URL: http://localhost:4566/
+          AWS_REGION: ap-northeast-1
           AWS_ACCESS_KEY_ID: xxx
           AWS_SECRET_ACCESS_KEY: yyy
           TF_VAR_architecture: x86_64
+        run: terraform apply -auto-approve
 
       - name: Setup Node
         uses: actions/setup-node@v4

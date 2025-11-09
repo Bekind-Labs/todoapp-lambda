@@ -6,20 +6,38 @@ services:
     ports:
       - "4566:4566"
     environment:
+      AWS_REGION: ap-northeast-1
       DISABLE_CORS_CHECKS: 1
       DYNAMODB_SHARE_DB: 1
+      STATE_BUCKET: local-terraform-state
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  setup-localstack:
-    image: hashicorp/terraform
+  create-bucket:
+    image: amazon/aws-cli
     depends_on:
       - localstack
-    restart: no
-    volumes:
-      - ./terraform:/tmp/terraform
     environment:
       AWS_ENDPOINT_URL: http://localstack:4566/
+      AWS_REGION: ap-northeast-1
       AWS_ACCESS_KEY_ID: xxx
       AWS_SECRET_ACCESS_KEY: yyy
-    entrypoint: [ '/bin/sh', '-c', 'cd /tmp/terraform && terraform init && terraform apply -auto-approve' ]
+      STATE_BUCKET: local-terraform-state
+    entrypoint: [ '/bin/sh', '-c', 'aws --endpoint=$$AWS_ENDPOINT_URL s3 mb s3://$$STATE_BUCKET' ]
+
+  run-terraform:
+    image: hashicorp/terraform
+    depends_on:
+      create-bucket:
+        condition: service_completed_successfully
+    volumes:
+      - ./terraform:/tmp/terraform
+    working_dir:
+      /tmp/terraform
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566/
+      AWS_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: xxx
+      AWS_SECRET_ACCESS_KEY: yyy
+      STATE_BUCKET: local-terraform-state
+    entrypoint: [ '/bin/sh', '-c', 'terraform init -reconfigure -backend-config=bucket=$$STATE_BUCKET && terraform apply -auto-approve' ]
