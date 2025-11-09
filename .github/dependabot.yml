@@ -4,5 +4,5 @@ updates:
     directories:
       - "app/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
 
